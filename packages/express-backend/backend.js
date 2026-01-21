@@ -62,6 +62,10 @@ const findUsersByNameAndJob = (name, job) => {
   );
 };
 
+const generateId = () => {
+  return Math.random().toString(36).slice(2, 8);
+};
+
 const deleteUserById = (id) => {
   const index = users.users_list.findIndex((user) => user.id === id);
   if (index === -1) return false;
@@ -89,6 +93,7 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = generateId();
   addUser(userToAdd);
 
   res.status(201).send();
