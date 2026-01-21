@@ -31,9 +31,27 @@ function MyApp() {
     return promise;
   }
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => i !== index);
-    setCharacters(updated);
+  function deleteUser(id) {
+    return fetch(`http://localhost:8000/users/${id}`, {
+      method: "DELETE",
+    });
+  }
+
+  function removeOneCharacter(id) {
+    deleteUser(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = characters.filter((c) => c.id !== id);
+          setCharacters(updated);
+        } else if (res.status === 404) {
+          console.log("User not found on server.");
+        } else {
+          console.log("DELETE failed. Status:", res.status);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function updateList(person) {
