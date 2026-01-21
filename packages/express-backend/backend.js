@@ -93,10 +93,10 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  userToAdd.id = generateId();
-  addUser(userToAdd);
 
-  res.status(201).send();
+  const createdUser = { ...userToAdd, id: generateId() };
+  addUser(createdUser);
+  res.status(201).json(createdUser);
 });
 
 app.delete("/users/:id", (req, res) => {

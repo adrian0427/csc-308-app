@@ -40,10 +40,13 @@ function MyApp() {
     postUser(person)
       .then((res) => {
         if (res.status === 201) {
-          setCharacters([...characters, person]);
+          return res.json();
         } else {
-          console.log("POST /users failed. Status:", res.status);
+          throw new Error("POST /users failed with status " + res.status);
         }
+      })
+      .then((createdUser) => {
+        setCharacters([...characters, createdUser]);
       })
       .catch((error) => {
         console.log(error);
